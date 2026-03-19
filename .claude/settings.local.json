@@ -1,0 +1,8 @@
+{
+  "permissions": {
+    "allow": [
+      "Bash(node -e \"import\\(''xss-clean''\\).then\\(m => console.log\\(''OK''\\)\\).catch\\(e => console.log\\(''ERROR:'', e.message\\)\\)\")",
+      "Bash(npm list:*)"
+    ]
+  }
+}
