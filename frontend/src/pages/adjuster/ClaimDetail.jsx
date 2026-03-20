@@ -10,6 +10,7 @@ import { formatDate, fromNow } from "../../utils/formatDate.js";
 import { STATUS_BADGE_CLASS, STATUS_LABELS } from "../../utils/roleHelpers.js";
 import Loader from "../../components/common/Loader.jsx";
 import { AlertTriangle, Video, FileText, CheckCircle, XCircle, ClipboardList } from "lucide-react";
+import BackButton from "../../components/common/BackButton.jsx";
 
 const RiskMeter = ({ score }) => {
   const color = score >= 60 ? "bg-red-500" : score >= 40 ? "bg-amber-500" : "bg-emerald-500";
@@ -83,7 +84,7 @@ const ClaimDetail = () => {
       {/* Header */}
       <motion.div initial={{ opacity: 0, y: -16 }} animate={{ opacity: 1, y: 0 }} className="flex items-start justify-between">
         <div>
-          <button onClick={() => navigate(-1)} className="text-gray-400 text-xs hover:text-gray-600 mb-2 flex items-center gap-1">← Back</button>
+          <BackButton className="mb-2" />
           <div className="flex items-center gap-3 flex-wrap">
             <h1 className="text-2xl font-bold text-gray-800">{claim.title}</h1>
             <span className={`badge ${STATUS_BADGE_CLASS[claim.status]}`}>{STATUS_LABELS[claim.status]}</span>

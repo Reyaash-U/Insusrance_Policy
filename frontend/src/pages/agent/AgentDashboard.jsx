@@ -58,7 +58,7 @@ const AgentDashboard = () => {
   const activePurchased = purchased.filter((p) => p.status === "active").length;
   const totalPremium    = purchased
     .filter((p) => p.status === "active")
-    .reduce((s, p) => s + (p.premiumSnapshot?.monthlyPremium || 0), 0);
+    .reduce((s, p) => s + (p.premiumDetails?.calculatedMonthlyPremium || 0), 0);
 
   // Category breakdown from active policies
   const categoryMap = {};
@@ -159,7 +159,7 @@ const AgentDashboard = () => {
                   </div>
                   <div className="text-right flex-shrink-0">
                     <p className="text-blue-500 text-xs font-bold">
-                      {formatCurrency(p.premiumSnapshot?.monthlyPremium || 0)}<span className="text-gray-400 font-normal">/mo</span>
+                      {formatCurrency(p.premiumDetails?.calculatedMonthlyPremium || 0)}<span className="text-gray-400 font-normal">/mo</span>
                     </p>
                     <span className={`badge text-[9px] ${p.status === "active" ? "badge-active" : "badge-rejected"}`}>
                       {p.status}

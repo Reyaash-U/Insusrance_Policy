@@ -8,6 +8,7 @@ import NeonButton from "../../components/common/NeonButton.jsx";
 import { fromNow } from "../../utils/formatDate.js";
 import { formatCurrency } from "../../utils/formatCurrency.js";
 import { Flag, Clock, Lock, AlertCircle, Shield, AlertTriangle, X } from "lucide-react";
+import BackButton from "../../components/common/BackButton.jsx";
 
 /* ── Risk Meter ───────────────────────────────────────────────── */
 const RiskMeter = ({ score }) => {
@@ -309,6 +310,7 @@ const FraudLogs = () => {
       </AnimatePresence>
 
       <div className="space-y-6 max-w-7xl mx-auto">
+        <BackButton />
         <motion.div initial={{ opacity: 0, y: -16 }} animate={{ opacity: 1, y: 0 }}>
           <h1 className="text-3xl font-bold gradient-text">Fraud Logs</h1>
           <p className="text-gray-400 text-sm mt-1">AI-powered rule-based fraud detection results</p>

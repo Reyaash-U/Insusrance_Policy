@@ -5,6 +5,7 @@ import api from "../../api/axios.js";
 import GlassCard from "../../components/common/GlassCard.jsx";
 import NeonButton from "../../components/common/NeonButton.jsx";
 import { fromNow } from "../../utils/formatDate.js";
+import BackButton from "../../components/common/BackButton.jsx";
 
 const ROLE_COLORS = { admin:"text-red-500", adjuster:"text-amber-500", agent:"text-teal-600", customer:"text-emerald-500" };
 
@@ -33,6 +34,7 @@ const ManageUsers = () => {
 
   return (
     <div className="space-y-6 max-w-6xl mx-auto">
+      <BackButton />
       <motion.div initial={{ opacity: 0, y: -16 }} animate={{ opacity: 1, y: 0 }}>
         <h1 className="text-3xl font-bold gradient-text">Manage Users</h1>
         <p className="text-gray-400 text-sm mt-1">{users.length} users</p>

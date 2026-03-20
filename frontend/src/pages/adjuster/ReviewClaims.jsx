@@ -9,6 +9,7 @@ import { formatCurrency } from "../../utils/formatCurrency.js";
 import { fromNow } from "../../utils/formatDate.js";
 import { STATUS_BADGE_CLASS, STATUS_LABELS } from "../../utils/roleHelpers.js";
 import { AlertTriangle, CheckCircle, Flag } from "lucide-react";
+import BackButton from "../../components/common/BackButton.jsx";
 
 const ReviewClaims = () => {
   const [claims,  setClaims]  = useState([]);
@@ -30,6 +31,7 @@ const ReviewClaims = () => {
 
   return (
     <div className="space-y-6 max-w-5xl mx-auto">
+      <BackButton />
       <motion.div initial={{ opacity: 0, y: -16 }} animate={{ opacity: 1, y: 0 }}>
         <h1 className="text-3xl font-bold gradient-text">Review Claims</h1>
         <p className="text-gray-400 text-sm mt-1">{claims.length} claim(s) in your queue</p>

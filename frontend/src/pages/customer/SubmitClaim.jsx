@@ -10,6 +10,7 @@ import GlassCard from "../../components/common/GlassCard.jsx";
 import NeonButton from "../../components/common/NeonButton.jsx";
 import { formatCurrency } from "../../utils/formatCurrency.js";
 import { FileText, Video, AlertTriangle, X } from "lucide-react";
+import BackButton from "../../components/common/BackButton.jsx";
 
 const MAX_FILES = 10;
 const MAX_MB    = 10;
@@ -137,6 +138,7 @@ const SubmitClaim = () => {
 
   return (
     <div className="max-w-3xl mx-auto space-y-6">
+      <BackButton />
       {/* Header */}
       <motion.div initial={{ opacity: 0, y: -16 }} animate={{ opacity: 1, y: 0 }}>
         <h1 className="text-3xl font-bold gradient-text">File a Claim</h1>

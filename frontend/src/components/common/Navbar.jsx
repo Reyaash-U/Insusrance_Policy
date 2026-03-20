@@ -46,13 +46,7 @@ const Navbar = () => {
         boxShadow: "0 1px 12px rgba(99,102,241,0.06)",
       }}>
 
-      {/* Left: connection status */}
-      <div className="flex items-center gap-2">
-        {connected
-          ? <Wifi size={13} className="text-emerald-400" />
-          : <WifiOff size={13} className="text-gray-300" />}
-        <span className="text-gray-400 text-xs font-medium">{connected ? "Live" : "Offline"}</span>
-      </div>
+      <div />
 
       {/* Right */}
       <div className="flex items-center gap-3">

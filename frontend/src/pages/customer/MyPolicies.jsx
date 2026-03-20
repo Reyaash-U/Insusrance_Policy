@@ -6,6 +6,7 @@ import GlassCard from "../../components/common/GlassCard.jsx";
 import { formatCurrency } from "../../utils/formatCurrency.js";
 import { formatDate } from "../../utils/formatDate.js";
 import { Heart, Car, Home, Leaf, Plane, Briefcase, Circle, Shield, Clock, Calendar } from "lucide-react";
+import BackButton from "../../components/common/BackButton.jsx";
 
 const CAT_ICON_MAP = { health: Heart, auto: Car, home: Home, life: Leaf, travel: Plane, business: Briefcase, other: Circle };
 const CatIcon = ({ cat, size = 20 }) => { const I = CAT_ICON_MAP[cat] || Shield; return <I size={size} className="text-gray-500" />; };
@@ -118,6 +119,7 @@ const MyPolicies = () => {
 
   return (
     <div className="space-y-6 max-w-7xl mx-auto">
+      <BackButton />
       <motion.div initial={{ opacity: 0, y: -16 }} animate={{ opacity: 1, y: 0 }}>
         <h1 className="text-3xl font-bold gradient-text">My Policies</h1>
         <p className="text-gray-400 text-sm mt-1">{policies.length} total · {active.length} active</p>

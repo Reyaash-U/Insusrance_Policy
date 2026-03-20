@@ -10,6 +10,7 @@ import PremiumCalculator from "../../components/premium/PremiumCalculator.jsx";
 import {
   LayoutGrid, Heart, Car, Home, Star, Plane, Briefcase, Circle, Search, Shield,
 } from "lucide-react";
+import BackButton from "../../components/common/BackButton.jsx";
 
 const CATEGORIES = ["all","health","auto","home","life","travel","business","other"];
 const CAT_ICON_MAP = { all: LayoutGrid, health: Heart, auto: Car, home: Home, life: Star, travel: Plane, business: Briefcase, other: Circle };
@@ -122,6 +123,7 @@ const BrowsePolicies = () => {
 
   return (
     <div className="space-y-6 max-w-7xl mx-auto">
+      <BackButton />
       {/* Header */}
       <motion.div initial={{ opacity: 0, y: -16 }} animate={{ opacity: 1, y: 0 }}>
         <h1 className="text-3xl font-bold gradient-text">Policy Marketplace</h1>

@@ -43,29 +43,13 @@ export const register = asyncHandler(async (req, res) => {
     password,
     role: role || "customer",
     phone: phone || null,
+    isEmailVerified: true,
   });
-
-  // Generate email verification token
-  const verificationToken = generateEmailVerificationToken(user._id.toString());
-
-  // Store hashed reference (we store the token itself; for extra security you
-  // could store only a hash, but JWT is already signed)
-  user.emailVerificationToken = verificationToken;
-  user.emailVerificationExpires = new Date(Date.now() + 24 * 60 * 60 * 1000); // 24h
-  await user.save({ validateBeforeSave: false });
-
-  // Send verification email (non-blocking — don't fail registration if mail fails)
-  try {
-    await sendVerificationEmail(user, verificationToken);
-  } catch (emailError) {
-    // Log but don't block registration
-    console.error("Email send failed:", emailError.message);
-  }
 
   return sendSuccess(
     res,
     201,
-    "Registration successful. Please check your email to verify your account.",
+    "Registration successful. You can now log in.",
     { userId: user._id, email: user.email }
   );
 });
@@ -216,14 +200,6 @@ export const login = asyncHandler(async (req, res) => {
       attemptsLeft > 0
         ? `Invalid email or password. ${attemptsLeft} attempt(s) remaining before account lockout.`
         : "Invalid email or password. Account has been locked for 30 minutes."
-    );
-  }
-
-  if (!user.isEmailVerified) {
-    return sendError(
-      res,
-      403,
-      "Please verify your email address before logging in. Check your inbox for the verification link."
     );
   }
 

@@ -7,6 +7,7 @@ import NeonButton from "../../components/common/NeonButton.jsx";
 import { formatCurrency } from "../../utils/formatCurrency.js";
 import { fromNow } from "../../utils/formatDate.js";
 import { Heart, Car, Home, Leaf, Plane, Building2, Shield, X } from "lucide-react";
+import BackButton from "../../components/common/BackButton.jsx";
 
 const CATEGORY_COLORS = {
   health:     "text-emerald-500",
@@ -223,6 +224,7 @@ const AllPolicies = () => {
       </AnimatePresence>
 
       <div className="space-y-6 max-w-7xl mx-auto">
+        <BackButton className="mb-2" />
         <motion.div initial={{ opacity: 0, y: -16 }} animate={{ opacity: 1, y: 0 }}
           className="flex items-start justify-between">
           <div>
