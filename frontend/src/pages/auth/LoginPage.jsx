@@ -4,7 +4,7 @@ import { motion } from "framer-motion";
 import { useDispatch, useSelector } from "react-redux";
 import toast from "react-hot-toast";
 import {
-  loginUser, selectIsActionLoading, selectAuthError,
+  loginUser, fetchCurrentUser, selectIsActionLoading, selectAuthError,
   selectIsAuthenticated, clearError,
 } from "../../store/authSlice.js";
 import { getRoleHome } from "../../routes/RoleRoute.jsx";
@@ -70,7 +70,10 @@ const LoginPage = () => {
   const handleSubmit = async (e) => {
     e.preventDefault();
     if (!form.email || !form.password) { toast.error("Please fill in all fields."); return; }
-    dispatch(loginUser(form));
+    const result = await dispatch(loginUser(form));
+    if (!result.error) {
+      await dispatch(fetchCurrentUser());
+    }
   };
 
   return (

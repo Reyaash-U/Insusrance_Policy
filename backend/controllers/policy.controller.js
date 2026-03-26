@@ -387,7 +387,7 @@ export const adminGetAllPolicies = asyncHandler(async (req, res) => {
 
   const filter = {};
   if (category) filter.category = category;
-  if (isActive !== undefined) filter.isActive = isActive === "true";
+  if (isActive !== undefined && isActive !== "") filter.isActive = isActive === "true";
 
   const skip = (Number(page) - 1) * Number(limit);
 

@@ -51,13 +51,16 @@ export const createPolicyValidator = [
     }),
 
   body("coverages")
-    .isArray({ min: 1 }).withMessage("At least one coverage item is required."),
+    .optional()
+    .isArray().withMessage("Coverages must be an array."),
 
   body("coverages.*.name")
+    .optional()
     .trim()
     .notEmpty().withMessage("Each coverage must have a name."),
 
   body("coverages.*.limit")
+    .optional()
     .isFloat({ min: 0 }).withMessage("Each coverage limit must be non-negative."),
 
   body("availableAddOns")

@@ -51,9 +51,9 @@ const ResolveModal = ({ log, onClose, onResolved }) => {
   };
 
   const options = [
-    { val: "confirmed_fraud",  label: "Confirmed Fraud",  color: "red",    desc: "Fraudulent activity confirmed. Reject claim." },
-    { val: "false_positive",   label: "False Positive",   color: "green",  desc: "Investigation shows no fraud. Clear the flag." },
-    { val: "under_investigation", label: "Under Investigation", color: "amber", desc: "Keep flagged while investigation continues." },
+    { val: "confirmed_fraud", label: "Confirmed Fraud",      color: "red",   desc: "Fraudulent activity confirmed. Reject claim." },
+    { val: "cleared",         label: "Cleared (No Fraud)",   color: "green", desc: "Investigation shows no fraud. Clear the flag." },
+    { val: "escalated",       label: "Escalated",            color: "amber", desc: "Escalate for further investigation." },
   ];
 
   return (
@@ -134,10 +134,10 @@ const FraudCard = ({ log, i, onResolve, onRecheck }) => {
   };
 
   const resolutionBadge = {
-    pending:              { cls: "badge-submitted",    label: "Pending" },
-    confirmed_fraud:      { cls: "badge-rejected",     label: "Confirmed Fraud" },
-    false_positive:       { cls: "badge-active",       label: "False Positive" },
-    under_investigation:  { cls: "badge-under-review", label: "Investigating" },
+    pending:         { cls: "badge-submitted",    label: "Pending" },
+    confirmed_fraud: { cls: "badge-rejected",     label: "Confirmed Fraud" },
+    cleared:         { cls: "badge-active",       label: "Cleared" },
+    escalated:       { cls: "badge-under-review", label: "Escalated" },
   };
   const rb = resolutionBadge[log.resolution] || resolutionBadge.pending;
 
@@ -291,10 +291,10 @@ const FraudLogs = () => {
   };
 
   const statCards = [
-    { label: "Total Flagged",    val: stats?.flaggedCount     || 0, Icon: Flag,          color: "red"    },
-    { label: "Pending Review",   val: stats?.pendingCount     || 0, Icon: Clock,         color: "amber"  },
-    { label: "Confirmed Fraud",  val: stats?.confirmedCount   || 0, Icon: Lock,          color: "purple" },
-    { label: "Avg Risk Score",   val: stats ? `${(stats.avgRiskScore || 0).toFixed(0)}/100` : "—", Icon: AlertCircle, color: "blue" },
+    { label: "Total Flagged",    val: stats?.overview?.flaggedLogs    || 0, Icon: Flag,          color: "red"    },
+    { label: "Pending Review",   val: stats?.overview?.pendingReview  || 0, Icon: Clock,         color: "amber"  },
+    { label: "Confirmed Fraud",  val: stats?.overview?.confirmedFraud || 0, Icon: Lock,          color: "purple" },
+    { label: "Avg Risk Score",   val: stats ? `${(stats.overview?.avgRiskScore || 0).toFixed(0)}/100` : "—", Icon: AlertCircle, color: "blue" },
   ];
 
   return (
@@ -337,11 +337,11 @@ const FraudLogs = () => {
         <div className="flex flex-wrap gap-3">
           <select value={filter.resolution} onChange={(e) => setFilter((p) => ({ ...p, resolution: e.target.value }))}
             className="input-neon max-w-[180px] text-sm">
-            <option value=""              style={{ background: "#ffffff", color: "#1e1b4b" }}>All Resolutions</option>
-            <option value="pending"       style={{ background: "#ffffff", color: "#1e1b4b" }}>Pending</option>
+            <option value=""               style={{ background: "#ffffff", color: "#1e1b4b" }}>All Resolutions</option>
+            <option value="pending"        style={{ background: "#ffffff", color: "#1e1b4b" }}>Pending</option>
             <option value="confirmed_fraud" style={{ background: "#ffffff", color: "#1e1b4b" }}>Confirmed Fraud</option>
-            <option value="false_positive"  style={{ background: "#ffffff", color: "#1e1b4b" }}>False Positive</option>
-            <option value="under_investigation" style={{ background: "#ffffff", color: "#1e1b4b" }}>Investigating</option>
+            <option value="cleared"        style={{ background: "#ffffff", color: "#1e1b4b" }}>Cleared</option>
+            <option value="escalated"      style={{ background: "#ffffff", color: "#1e1b4b" }}>Escalated</option>
           </select>
           <button
             onClick={() => setFilter((p) => ({ ...p, isFlagged: p.isFlagged ? "" : "true" }))}

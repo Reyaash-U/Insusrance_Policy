@@ -52,7 +52,7 @@ const ActiveSlice = (props) => {
       <Sector cx={cx} cy={cy} innerRadius={outerRadius + 10} outerRadius={outerRadius + 14}
         startAngle={startAngle} endAngle={endAngle} fill={fill} />
       <text x={cx} y={cy - 10} textAnchor="middle" fill="#1e1b4b" fontWeight="800" fontSize={22}>{value}</text>
-      <text x={cx} y={cy + 12} textAnchor="middle" fill="#6b7280" fontSize={11} fontWeight="500" textTransform="capitalize">
+      <text x={cx} y={cy + 12} textAnchor="middle" fill="#6b7280" fontSize={11} fontWeight="500" style={{ textTransform: "capitalize" }}>
         {payload.name}
       </text>
     </g>

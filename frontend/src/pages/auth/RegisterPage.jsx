@@ -120,8 +120,8 @@ const RegisterPage = () => {
         <motion.div animate={{ scale: [1, 1.1, 1] }} transition={{ duration: 1, repeat: 2 }} className="flex justify-center mb-4"><PartyPopper size={56} className="text-purple-500" /></motion.div>
         <h2 className="text-2xl font-bold gradient-text mb-2" style={{ fontFamily: "'Syne', sans-serif" }}>You're registered!</h2>
         <p className="text-gray-500 text-sm mb-6">
-          We sent a verification link to <span className="text-teal-600 font-semibold">{form.email}</span>.
-          Please check your inbox to activate your account.
+          Your account has been created for <span className="text-teal-600 font-semibold">{form.email}</span>.
+          You can now log in.
         </p>
         <NeonButton variant="purple" fullWidth onClick={() => navigate("/login")}>Go to Login</NeonButton>
       </motion.div>

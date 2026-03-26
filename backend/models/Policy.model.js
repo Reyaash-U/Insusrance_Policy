@@ -80,10 +80,7 @@ const policySchema = new mongoose.Schema(
     },
     coverages: {
       type: [coverageSchema],
-      validate: {
-        validator: (arr) => arr.length >= 1,
-        message: "A policy must have at least one coverage item.",
-      },
+      default: [],
     },
     availableAddOns: {
       type: [addOnSchema],

@@ -247,6 +247,7 @@ claimSchema.virtual("isResolved").get(function () {
 });
 
 claimSchema.virtual("daysSinceSubmission").get(function () {
+  if (!this.createdAt) return 0;
   const diff = Date.now() - this.createdAt.getTime();
   return Math.floor(diff / (1000 * 60 * 60 * 24));
 });
