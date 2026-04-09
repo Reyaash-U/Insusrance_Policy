@@ -295,9 +295,22 @@ export const reviewClaim = asyncHandler(async (req, res) => {
   const claim = await Claim.findById(req.params.claimId);
   if (!claim) return sendError(res, 404, "Claim not found.");
 
-  // Adjuster can only review claims assigned to them (admins bypass)
-  if (req.user.role === "adjuster" && claim.adjuster?.toString() !== req.user._id.toString()) {
-    return sendError(res, 403, "This claim is not assigned to you.");
+  // Adjuster permission rule:
+  // - Can review only their own assigned claims.
+  // - Can take an unassigned submitted claim only when moving it to under_review.
+  if (req.user.role === "adjuster") {
+    const isAssignedToSelf = claim.adjuster?.toString() === req.user._id.toString();
+    const isUnassigned = !claim.adjuster;
+    const canTakeOwnership =
+      isUnassigned && claim.status === "submitted" && status === "under_review";
+
+    if (!isAssignedToSelf && !canTakeOwnership) {
+      return sendError(res, 403, "This claim is not assigned to you.");
+    }
+
+    if (canTakeOwnership) {
+      claim.adjuster = req.user._id;
+    }
   }
 
   // Status transition validation
@@ -344,7 +357,7 @@ export const reviewClaim = asyncHandler(async (req, res) => {
     claim.resolvedAt      = new Date();
   }
 
-  if (status === "under_review" && !claim.adjuster) {
+  if (status === "under_review" && !claim.adjuster && req.user.role === "adjuster") {
     claim.adjuster = req.user._id;
   }
 

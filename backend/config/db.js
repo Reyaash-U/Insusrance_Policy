@@ -2,11 +2,25 @@ import mongoose from "mongoose";
 import logger from "../utils/logger.js";
 
 const connectDB = async () => {
+  const mongoUri = process.env.MONGO_URI;
+
+  if (!mongoUri) {
+    logger.error("MONGO_URI is not set. Add it to backend/.env before starting the server.");
+    process.exit(1);
+  }
+
+  const connectOptions = {
+    serverSelectionTimeoutMS: Number(process.env.MONGO_SERVER_SELECTION_TIMEOUT_MS || 10000),
+    socketTimeoutMS: Number(process.env.MONGO_SOCKET_TIMEOUT_MS || 45000),
+  };
+
+  // Force IPv4 only when needed (useful on some Windows/DNS setups with Atlas SRV).
+  if (process.env.MONGO_FORCE_IPV4 === "true") {
+    connectOptions.family = 4;
+  }
+
   try {
-    const conn = await mongoose.connect(process.env.MONGO_URI, {
-      serverSelectionTimeoutMS: 5000,
-      socketTimeoutMS: 45000,
-    });
+    const conn = await mongoose.connect(mongoUri, connectOptions);
 
     logger.info(`MongoDB connected: ${conn.connection.host}`);
 
@@ -23,6 +37,23 @@ const connectDB = async () => {
     });
   } catch (error) {
     logger.error(`MongoDB initial connection failed: ${error.message}`);
+
+    if (
+      /whitelist|ip|not allowed|server selection|could not connect to any servers/i.test(
+        error.message
+      )
+    ) {
+      logger.error(
+        "Atlas access issue detected. Verify Network Access allowlist and database user credentials in Atlas."
+      );
+    }
+
+    if (/querysrv|enotfound|etimeout|dns/i.test(error.message)) {
+      logger.error(
+        "DNS/SRV lookup issue detected. Try setting MONGO_FORCE_IPV4=true in backend/.env and retry."
+      );
+    }
+
     process.exit(1);
   }
 };
