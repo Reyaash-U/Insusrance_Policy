@@ -68,6 +68,40 @@ A full-stack MERN application for managing insurance policies, claims processing
 
 ---
 
+<h2>Screenshots</h2>
+
+<h3>Login Page</h3>
+<h2>Screenshots</h2>
+
+<h3>Login Page</h3>
+<img src="https://github.com/user-attachments/assets/1e42215b-98eb-48c5-82c6-ee588140d755" width="800"/>
+
+<h3>Customer Dashboard</h3>
+<img width="1919" height="1030" alt="image" src="https://github.com/user-attachments/assets/409ff579-936b-4fe9-b91a-bf467896fe0a" />
+
+<h3>Claim Page</h3>
+<img width="1915" height="1027" alt="image" src="https://github.com/user-attachments/assets/b5027690-9328-44a6-8e34-0f4ef5be70d0" />
+
+
+<h3>Admin Page</h3>
+<img width="1919" height="1020" alt="image" src="https://github.com/user-attachments/assets/39d2f84f-3e2e-4eda-9109-c1c651b3ae66" />
+
+
+<h3>Claims Admin Page</h3>
+<img width="1919" height="1031" alt="image" src="https://github.com/user-attachments/assets/440112ff-6e00-4d9d-bce9-2ad85256de75" />
+
+<h3>Policies</h3>
+<img width="1919" height="1016" alt="image" src="https://github.com/user-attachments/assets/d1c9445e-1018-4a9e-85c7-6cd74072a8fd" />
+
+<h3>Fraud Logs</h3>
+<img width="1919" height="1031" alt="image" src="https://github.com/user-attachments/assets/c4d6efa2-3600-4281-91f9-4c6b828d7dde" />
+
+
+<h3>Adjuster Page</h3>
+<img width="1919" height="1039" alt="image" src="https://github.com/user-attachments/assets/1d41142e-f0fa-440e-8fa4-10a3c7b22bde" />
+
+
+
 ## Project Structure
 
 ```
