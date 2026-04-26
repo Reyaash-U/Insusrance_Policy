@@ -96,6 +96,7 @@ app.use("/api", globalLimiter);
 // ─── Health Check ──────────────────────────────────────────
 app.get("/api/health", (req, res) => {
   res.status(200).json({
+    status: "ok",
     success: true,
     message: "Insurance API is running.",
     environment: process.env.NODE_ENV,
