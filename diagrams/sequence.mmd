@@ -1,0 +1,55 @@
+sequenceDiagram
+    actor       Customer
+    participant FE  as React Frontend
+    participant MW  as Middleware
+    participant CC  as Claim Controller
+    participant FS  as Fraud Service
+    participant SS  as Socket Service
+    participant DB  as MongoDB
+
+    rect rgb(230, 240, 255)
+        Note over Customer,DB: Phase 1 — Claim Submission
+        Customer ->> FE  : Fill form + attach evidence files
+        FE       ->> MW  : POST /api/claims  (JWT Bearer)
+        MW       ->> CC  : submitClaim()
+        CC       ->> DB  : Upload files → verify policy → save Claim
+        DB      -->> CC  : Saved Claim (CLM-2026-XXXXXX)
+    end
+
+    rect rgb(255, 237, 213)
+        Note over CC,DB: Phase 2 — Fraud Detection  (7 Rules)
+        CC  ->>  FS : runFraudChecks(claim, policy)
+        par Async DB checks
+            FS ->> DB : Frequency, duplicate date, pending claims
+        end
+        FS  ->>  FS : Sync checks — expiry, wait period, high amount, coverage
+        FS -->>  CC : { riskScore, isFlagged, triggeredRules }
+        CC  ->>  DB : Save FraudLog + update Claim
+        alt riskScore ≥ 40
+            CC ->> SS : emitToRole("admin", fraud:flagged)
+            SS -->> FE: Admin notified in real-time
+        end
+    end
+
+    rect rgb(220, 252, 231)
+        Note over CC,Customer: Phase 3 — Submission Confirmation
+        CC  ->>  SS : notify(customer, CLAIM_SUBMITTED)
+        SS -->>  FE : notification:new → dropdown updates
+        FE -->> Customer : Toast — "Claim submitted successfully!"
+    end
+
+    rect rgb(243, 232, 255)
+        Note over Adjuster,DB: Phase 4 — Adjuster Review
+        actor Adjuster
+        Adjuster ->> FE : Open claim queue
+        FE       ->> MW : GET /api/claims/adjuster/queue  (JWT)
+        MW       ->> CC : getAdjusterQueue()
+        CC       ->> DB : Find assigned under-review claims
+        DB      -->> FE : Claims list with risk scores
+        Adjuster ->> FE : Approve claim + add note
+        FE       ->> MW : PATCH /api/claims/:id/review
+        MW       ->> CC : reviewClaim()
+        CC       ->> DB : Update status + deduct coverage amount
+        CC       ->> SS : notify(customer, CLAIM_APPROVED)
+        SS      -->> FE : Customer notified in real-time
+    end

@@ -1,0 +1,32 @@
+graph LR
+    subgraph CLIENT["CLIENT — React + Vite  (Port 5173)"]
+        Core["App Core\nmain.jsx, App.jsx, Redux Store\nAuthContext, SocketContext, NotifContext"]
+        Routing["Routing\nReact Router v6, ProtectedRoute, RoleRoute"]
+        Pages["Pages\nAuth, Customer, Adjuster, Admin, Agent"]
+        UI["Shared UI Components\nNavbar, Sidebar, GlassCard, NeonButton\nNotifDropdown, PremiumCalculator"]
+        Axios["Axios Client\nbaseURL, JWT interceptors"]
+    end
+
+    subgraph SERVER["SERVER — Node.js / Express  (Port 5000)"]
+        Routes["API Routes\n/auth, /policies, /claims\n/fraud, /notifications, /upload, /admin"]
+        MW["Middleware\nJWT Auth, RBAC, Rate Limit\nSanitize, Multer, Validator, ErrorHandler"]
+        Controllers["Controllers\nauth, policy, claim, fraud\nnotification, upload, admin"]
+        Services["Services\nfraud, socket, upload"]
+        Socket["Socket.io Server\nRole-based rooms"]
+    end
+
+    subgraph DATA["DATA LAYER"]
+        Models["Mongoose Models\nUser, Policy, PurchasedPolicy\nClaim, FraudLog, Notification"]
+        MongoDB[("MongoDB Atlas\n6 collections")]
+        GridFS[("GridFS\nFile Storage")]
+    end
+
+    Core --> Routing --> Pages --> UI
+    Pages --> Axios
+    Axios -- "HTTPS REST" --> Routes
+    Core -- "WebSocket" --> Socket
+    Routes --> MW --> Controllers
+    Controllers --> Services --> Socket
+    Controllers & Services --> Models
+    Models --> MongoDB
+    Services --> GridFS

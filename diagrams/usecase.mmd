@@ -1,0 +1,44 @@
+%%{ init: { "flowchart": { "curve": "linear" } } }%%
+flowchart LR
+    Customer(["👤\nCustomer"])
+    Agent(["👤\nAgent"])
+    Adjuster(["👤\nAdjuster"])
+    Admin(["👤\nAdmin"])
+
+    subgraph InsureX["InsureX — Insurance Management System"]
+
+        subgraph AUTH["Authentication"]
+            UC1("Account Management\nRegister, Login, Verify Email, Refresh")
+        end
+
+        subgraph POLICY["Policy Management"]
+            UC2("Browse & Purchase Policy\n+ Premium Calculator")
+            UC3("View Purchased Policies")
+            UC4("Manage Policies\nCreate, Edit, Deactivate")
+        end
+
+        subgraph CLAIM["Claim Management"]
+            UC5("Submit & Track Claims\nUpload Files, Withdraw")
+            UC6("Review Claims\nApprove, Reject, Add Note")
+            UC7("Manage Claims\nAssign Adjuster, View All, Stats")
+        end
+
+        subgraph FRAUD["Fraud Detection"]
+            UC8("Auto Fraud Check\non Claim Submission")
+            UC9("Review Fraud Logs\nRecheck, Resolve, Stats")
+        end
+
+        subgraph ADMIN_MGMT["Administration"]
+            UC10("Platform & User Admin\nStats, Change Role, Activate / Deactivate")
+        end
+
+        subgraph NOTIF["Notifications"]
+            UC11("Receive & Read Notifications\nReal-time alerts")
+            UC12("Broadcast Notification")
+        end
+    end
+
+    Customer  --- UC1 & UC2 & UC3 & UC5 & UC11
+    Agent     --- UC1 & UC3 & UC11
+    Adjuster  --- UC1 & UC6 & UC7 & UC9 & UC11
+    Admin     --- UC1 & UC4 & UC7 & UC8 & UC9 & UC10 & UC11 & UC12

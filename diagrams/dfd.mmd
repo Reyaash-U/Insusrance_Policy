@@ -1,0 +1,49 @@
+graph LR
+
+%% External Entities
+Customer((Customer))
+Agent((Agent))
+Admin((Admin))
+Adjuster((Adjuster))
+
+%% Processes
+P1[1. Authentication]
+P2[2. Policy Management]
+P3[3. Claim Processing]
+P4[4. Fraud Detection]
+P5[5. Notifications]
+
+%% Data Stores
+D1[(Users)]
+D2[(Policies)]
+D3[(Purchased Policies)]
+D4[(Claims)]
+D5[(Fraud Logs)]
+D6[(Notifications)]
+
+%% Flows
+Customer -->|Login/Register| P1
+Agent -->|Login| P1
+Admin -->|Login| P1
+
+P1 -->|User Data| D1
+
+Customer -->|Browse/Purchase Policy| P2
+Agent -->|Manage Policies| P2
+P2 --> D2
+P2 --> D3
+
+Customer -->|Submit Claim| P3
+Adjuster -->|Review Claim| P3
+P3 --> D4
+
+P3 -->|Claim Data| P4
+P4 --> D5
+
+P3 -->|Claim Event| P5
+P4 -->|Fraud Alert| P5
+P5 --> D6
+
+P5 --> Customer
+P5 --> Adjuster
+P5 --> Admin

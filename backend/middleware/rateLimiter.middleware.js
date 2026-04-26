@@ -13,20 +13,20 @@ const createLimiter = (windowMinutes, max, message) =>
 // Strict limiter for auth routes (login, register, forgot-password)
 export const authLimiter = createLimiter(
   15,
-  20,
+  50,
   "Too many authentication attempts. Please try again after 15 minutes."
 );
 
 // General API limiter applied globally
 export const globalLimiter = createLimiter(
   10,
-  200,
+  500,
   "Too many requests from this IP. Please try again after 10 minutes."
 );
 
 // Strict limiter for file uploads
 export const uploadLimiter = createLimiter(
   60,
-  30,
+  100,
   "Upload limit reached. Please try again after an hour."
 );

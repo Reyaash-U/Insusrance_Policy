@@ -1,0 +1,137 @@
+// InsureX — Database Schema
+// Generated for dbdiagram.io
+
+Table users {
+  _id         ObjectId  [pk]
+  firstName   string    [not null]
+  lastName    string    [not null]
+  email       string    [unique, not null]
+  password    string    [not null]
+  role        string    [not null, note: 'customer | agent | adjuster | admin']
+  phone       string
+  isActive    boolean   [default: true]
+  isEmailVerified boolean [default: false]
+  lastLogin   datetime
+  createdAt   datetime
+  updatedAt   datetime
+}
+
+Table policies {
+  _id               ObjectId  [pk]
+  name              string    [unique, not null]
+  slug              string    [unique]
+  category          string    [not null, note: 'health | auto | home | life | travel | business | other']
+  description       string    [not null]
+  basePremium       number    [not null]
+  maxClaimAmount    number    [not null]
+  deductible        number    [default: 0]
+  durationMonths    number    [not null]
+  waitingPeriodDays number    [default: 0]
+  minAge            number    [default: 18]
+  maxAge            number    [default: 99]
+  isActive          boolean   [default: true]
+  isFeatured        boolean   [default: false]
+  createdBy         ObjectId  [not null]
+  createdAt         datetime
+  updatedAt         datetime
+}
+
+Table purchased_policies {
+  _id                    ObjectId  [pk]
+  policy                 ObjectId  [not null]
+  customer               ObjectId  [not null]
+  agent                  ObjectId
+  customerAge            number    [not null]
+  riskLevel              string    [not null, note: 'low | medium | high']
+  assetValue             number    [not null]
+  startDate              datetime  [not null]
+  endDate                datetime  [not null]
+  claimsAllowedFrom      datetime  [not null]
+  status                 string    [default: 'active', note: 'active | expired | cancelled | suspended']
+  remainingCoverageAmount number   [not null]
+  totalClaimsCount       number    [default: 0]
+  totalClaimedAmount     number    [default: 0]
+  paymentReference       string
+  cancelledBy            ObjectId
+  createdAt              datetime
+  updatedAt              datetime
+}
+
+Table claims {
+  _id               ObjectId  [pk]
+  claimNumber       string    [unique]
+  purchasedPolicy   ObjectId  [not null]
+  policy            ObjectId  [not null]
+  customer          ObjectId  [not null]
+  adjuster          ObjectId
+  title             string    [not null]
+  description       string    [not null]
+  incidentDate      datetime  [not null]
+  claimAmount       number    [not null]
+  approvedAmount    number
+  deductibleApplied number    [default: 0]
+  finalPayoutAmount number
+  status            string    [default: 'submitted', note: 'submitted | under_review | approved | rejected | withdrawn']
+  adjusterNote      string
+  rejectionReason   string
+  resolvedAt        datetime
+  createdAt         datetime
+  updatedAt         datetime
+}
+
+Table fraud_logs {
+  _id            ObjectId  [pk]
+  claim          ObjectId  [unique, not null]
+  customer       ObjectId  [not null]
+  purchasedPolicy ObjectId [not null]
+  riskScore      number    [not null]
+  isFlagged      boolean   [not null]
+  resolution     string    [default: 'pending', note: 'pending | cleared | confirmed_fraud | escalated']
+  resolvedBy     ObjectId
+  resolvedAt     datetime
+  resolutionNote string
+  createdAt      datetime
+  updatedAt      datetime
+}
+
+Table notifications {
+  _id        ObjectId  [pk]
+  recipient  ObjectId  [not null]
+  sender     ObjectId
+  type       string    [not null, note: 'claim_submitted | claim_approved | claim_rejected | fraud_alert | policy_purchased | ...']
+  title      string    [not null]
+  message    string    [not null]
+  isRead     boolean   [default: false]
+  readAt     datetime
+  priority   string    [default: 'normal', note: 'low | normal | high | urgent']
+  link       string
+  createdAt  datetime
+  updatedAt  datetime
+}
+
+// ── Relationships ──────────────────────────────────────────────
+
+// Policy → User (creator)
+Ref: policies.createdBy > users._id
+
+// PurchasedPolicy → Policy, User (customer), User (agent), User (cancelledBy)
+Ref: purchased_policies.policy      > policies._id
+Ref: purchased_policies.customer    > users._id
+Ref: purchased_policies.agent       > users._id
+Ref: purchased_policies.cancelledBy > users._id
+
+// Claim → PurchasedPolicy, Policy, User (customer), User (adjuster)
+Ref: claims.purchasedPolicy > purchased_policies._id
+Ref: claims.policy          > policies._id
+Ref: claims.customer        > users._id
+Ref: claims.adjuster        > users._id
+
+// FraudLog → Claim (1:1), PurchasedPolicy, User (customer), User (resolver)
+Ref: fraud_logs.claim           - claims._id
+Ref: fraud_logs.purchasedPolicy > purchased_policies._id
+Ref: fraud_logs.customer        > users._id
+Ref: fraud_logs.resolvedBy      > users._id
+
+// Notification → User (recipient), User (sender)
+Ref: notifications.recipient > users._id
+Ref: notifications.sender    > users._id

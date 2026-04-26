@@ -1,0 +1,24 @@
+graph TB
+    User["👤 User\n(Web Browser)"]
+
+    subgraph FrontendTier["Frontend — Vite Dev Server  (Port 5173)"]
+        React["React 18 SPA\nVite, Redux Toolkit, React Router v6\nFramer Motion, Tailwind CSS"]
+        WS["Socket.io-client\nWebSocket connection"]
+    end
+
+    subgraph BackendTier["Backend — Node.js / Express  (Port 5000)"]
+        API["REST API\nExpress.js, JWT Auth, RBAC\nRate Limiting, Input Validation"]
+        SocketSrv["Socket.io Server\nReal-time events\nRole-based rooms"]
+    end
+
+    subgraph CloudTier["Cloud / Data Services"]
+        Atlas[("MongoDB Atlas\nMongoose ODM\nmongodb+srv://")]
+        GridFS[("GridFS\nClaim File Storage")]
+    end
+
+    User -- "HTTPS" --> React
+    React -- "HTTPS REST  (JSON)" --> API
+    WS -- "WSS  (JWT handshake)" --> SocketSrv
+    SocketSrv -- "Real-time push" --> WS
+    API -- "Mongoose ODM" --> Atlas
+    API -- "Multipart upload" --> GridFS
