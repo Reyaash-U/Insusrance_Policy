@@ -74,7 +74,8 @@ A full-stack MERN application for managing insurance policies, claims processing
 <h2>Screenshots</h2>
 
 <h3>Login Page</h3>
-<img src="https://github.com/user-attachments/assets/1e42215b-98eb-48c5-82c6-ee588140d755" width="800"/>
+<img width="1919" height="1074" alt="image" src="https://github.com/user-attachments/assets/697230e8-659f-4be9-bbfa-2100467b9e0a" />
+
 
 <h3>Customer Dashboard</h3>
 <img width="1919" height="1030" alt="image" src="https://github.com/user-attachments/assets/409ff579-936b-4fe9-b91a-bf467896fe0a" />
