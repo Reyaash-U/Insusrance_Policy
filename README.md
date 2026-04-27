@@ -3,7 +3,7 @@
 A full-stack MERN application for managing insurance policies, claims processing, fraud detection, and multi-role user workflows.
 
 🌍 **Live Demo:** [Click Here](https://insurance-x.netlify.app/) 
-Please wait 30-40 seconds while loggig in
+ - Please wait 30-40 seconds while logging in
 ---
 
 ## Tech Stack
